@@ -1,0 +1,28 @@
+name: Fload
+on:
+  push:
+     paths:
+        - 'tre1.json'
+
+jobs:
+   build:
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v3
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: FloadTre
+      run: |
+         mvn-compile
+         mvn-exec:java
+         -Dexec.mainClass="com.project.ewall.ai"
+
+      - name: Upload FloadTre
+        uses: actions/upload-artifact@v3
+        with:
+          name: model
+          path: output/model.ser
