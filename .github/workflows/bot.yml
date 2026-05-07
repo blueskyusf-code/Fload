@@ -1,20 +1,21 @@
 name: Fload
+
 on:
   issues:
     types: [opened]
   push:
-     paths:
-        - 'tre1.json'
+    paths:
+      - 'tre1.json'
 
 jobs:
-responder:
+  build:
     runs-on: ubuntu-latest
     permissions:
       issues: write
-   build:
-      runs-on: ubuntu-latest
-      steps:
-      - uses: actions/checkout@v3
+    steps:
+      - name: Checkout Código
+        uses: actions/checkout@v3
+
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
@@ -22,10 +23,16 @@ responder:
           distribution: 'temurin'
 
       - name: FloadTre
-      run: |
-         mvn-compile
-         mvn-exec:java
-         -Dexec.mainClass="com.project.ewall.ai"
+        run: |
+          mvn compile
+          mvn exec:java -Dexec.mainClass="com.project.ewall.ai" -Dexec.args="${{ github.event.issue.title }}"
+
+      - name: Postar Resposta na Issue
+        if: github.event_name == 'issues'
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: ""
 
       - name: Upload FloadTre
         uses: actions/upload-artifact@v3
