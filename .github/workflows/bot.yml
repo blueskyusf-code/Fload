@@ -7,6 +7,10 @@ on:
         - 'tre1.json'
 
 jobs:
+responder:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
    build:
       runs-on: ubuntu-latest
       steps:
