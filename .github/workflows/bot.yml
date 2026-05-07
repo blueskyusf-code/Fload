@@ -1,5 +1,7 @@
 name: Fload
 on:
+  issues:
+    types: [opened]
   push:
      paths:
         - 'tre1.json'
